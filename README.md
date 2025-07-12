@@ -15,6 +15,12 @@
   # Install all the npm modules
   yarn
 
+  # Use a Node.js LTS version (v16 recommended)
+  # to avoid issues with the frontend tooling
+
+  # Build shared package
+  yarn build:common
+
   # To run the api server in dev mode
   yarn dev:api
 

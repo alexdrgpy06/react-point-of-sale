@@ -15,11 +15,11 @@
     ]
   },
   "scripts": {
-    "dev:ui": "cd ./packages/ui && yarn start",
-    "dev:api": "cd ./packages/api && yarn run start:dev",
-    "build:common": "cd ./packages/common && yarn run build",
-    "db:gen-migration": "cd ./packages/api && yarn run db:gen-migration",
-    "db:run-migration": "cd ./packages/api && yarn run db:run-migration",
-    "db:seed": "cd ./packages/api && yarn run db:seed"
+    "dev:ui": "yarn workspace @pos/ui start",
+    "dev:api": "yarn workspace @pos/api start:dev",
+    "build:common": "yarn workspace @pos/common build",
+    "db:gen-migration": "yarn workspace @pos/api db:gen-migration",
+    "db:run-migration": "yarn workspace @pos/api db:run-migration",
+    "db:seed": "yarn workspace @pos/api db:seed"
   }
 }
