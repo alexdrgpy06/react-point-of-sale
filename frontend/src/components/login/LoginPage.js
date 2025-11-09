@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import CircularProgress from '@mui/material/CircularProgress';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import {
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  Box,
+} from '@mui/material';
 import ErrorMessage from '../controls/messages/ErrorMessage';
-import { loginUser } from '../../actions/auth';
-import styles from './styles';
+import { loginUser } from '../../redux/actions/auth';
 
 const LoginPage = ({ isLoggedIn, loginUser }) => {
   const [data, setData] = useState({ username: '', password: '' });
@@ -62,57 +66,80 @@ const LoginPage = ({ isLoggedIn, loginUser }) => {
   };
 
   return (
-    <Box sx={styles.root}>
-      <Box sx={styles.loginContainer}>
-        <Paper sx={styles.paper}>
-          <form onSubmit={onSubmit}>
-            <div>
-              <span>Welcome to Easy POS</span>
-            </div>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: '100vh',
+      }}
+    >
+      <Card sx={{ boxShadow: 3, p: 2 }}>
+        <CardContent>
+          <Typography component="h1" variant="h5" align="center" gutterBottom>
+            Easy POS
+          </Typography>
+          <Typography component="p" variant="body2" align="center" gutterBottom>
+            Welcome back! Please sign in.
+          </Typography>
+          <Box component="form" onSubmit={onSubmit} sx={{ mt: 1 }}>
             <ErrorMessage
               show={hasErrors()}
-              sx={styles.errorMessage}
               message={errors.global}
+              sx={{ mb: 2 }}
             />
             <TextField
               inputRef={usernameRef}
               error={!!errors.username}
+              helperText={errors.username}
               name="username"
               value={data.username}
               fullWidth
               label="Username"
-              placeholder="Username"
               margin="normal"
               onChange={onChange}
+              autoFocus
             />
             <TextField
               error={!!errors.password}
+              helperText={errors.password}
               name="password"
               value={data.password}
               fullWidth
               label="Password"
-              placeholder="Password"
               type="password"
               margin="normal"
               onChange={onChange}
             />
-            <Box sx={styles.wrapper}>
+            <Box sx={{ position: 'relative', mt: 3 }}>
               <Button
                 type="submit"
+                fullWidth
                 variant="contained"
                 color="primary"
                 disabled={loading}
               >
-                Login
+                Sign In
               </Button>
               {loading && (
-                <CircularProgress size={24} sx={styles.buttonProgress} />
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-12px',
+                    marginLeft: '-12px',
+                  }}
+                />
               )}
             </Box>
-          </form>
-        </Paper>
-      </Box>
-    </Box>
+          </Box>
+        </CardContent>
+      </Card>
+    </Container>
   );
 };
 

@@ -1,12 +1,11 @@
 import 'reflect-metadata';
-import { jwtVerify } from 'jose';
+import { verify } from 'jsonwebtoken';
 import { createExpressServer, useContainer, Action } from 'routing-controllers';
 import { Container } from 'typedi';
 import { Application } from 'express';
 import { config } from './config';
 import { Role } from './entity/User';
 import { AppDataSource } from './data-source';
-import { TextEncoder } from 'util';
 
 async function authorizationChecker(action: Action, roles: Role[]): Promise<boolean> {
   const token = (action.request.headers['authorization'] || '').replace('Bearer ', '');
@@ -16,12 +15,11 @@ async function authorizationChecker(action: Action, roles: Role[]): Promise<bool
   }
 
   try {
-    const secret = new TextEncoder().encode(config.jwtSecret);
-    const { payload } = await jwtVerify(token, secret);
-    action.request.token = payload;
+    const decoded = verify(token, config.jwtSecret) as any;
+    action.request.token = decoded;
 
     if (roles.length > 0) {
-      const hasRights = roles.some(role => role === (payload as any).role);
+      const hasRights = roles.some(role => role === decoded.role);
       if (hasRights) {
         return true;
       }
